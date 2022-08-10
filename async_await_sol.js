@@ -12,6 +12,16 @@ async function trabajosConsecutivos(categories) {
 
 }
 
+async function getCategories() {
+  const {data} = await axios.get('api/v0/categories?per_page=10&page=1')
+  await trabajosConsecutivos(data.data)
+}
+
+function wrapperTask() {
+  getCategories()
+}
+
 module.exports = {
   trabajosConsecutivos,
+  getCategories, wrapperTask
 }
