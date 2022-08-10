@@ -1,5 +1,22 @@
 const axios = require('axios').default;
 
+function trabajosConsecutivosRecursivo(categories) {
+  console.log("trabajosConsecutivosRecursivos...")
+  if (categories.length == 0) {
+    return 0
+  } else {
+    const id = categories[0].id
+    axios.get(`api/v0/categories/${id}/jobs?per_page=1&page=1&expand=["company"]`)
+      .then((response) => {
+        const n_jobs = response.data.data.length
+        return n_jobs + trabajosConsecutivosRecursivo(categories.slice(1))
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
+}
+
 function trabajosConsecutivos(response) {
   console.log(response.data.data)
   for (let i = 0; i < response.data.data.length; i++) {
@@ -13,7 +30,12 @@ function trabajosConsecutivos(response) {
 
 function getCategories() {
   axios.get('api/v0/categories?per_page=10&page=1')
-    .then(trabajosConsecutivosSolucionado)
+    // .then(trabajosConsecutivos)
+    // .then(trabajosConsecutivosSolucionado)
+    .then((response) => {
+      console.log("start")
+      console.log("jobs total: ", trabajosConsecutivosRecursivo(response.data.data))
+    })
 }
 
 function trabajosConsecutivosSolucionado(response) {
