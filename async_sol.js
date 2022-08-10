@@ -1,15 +1,14 @@
 const axios = require('axios').default;
 
 function trabajosConsecutivosRecursivo(categories) {
-  console.log("trabajosConsecutivosRecursivos...")
   if (categories.length == 0) {
-    return 0
+    return new Promise((resolve, reject) => resolve(0))
   } else {
     const id = categories[0].id
     axios.get(`api/v0/categories/${id}/jobs?per_page=1&page=1&expand=["company"]`)
       .then((response) => {
         const n_jobs = response.data.data.length
-        return n_jobs + trabajosConsecutivosRecursivo(categories.slice(1))
+        return new Promise((resolve, reject) => trabajosConsecutivosRecursivo(categories.slice(1)).then(r => r + n_jobs))
       })
       .catch(e => {
         console.log(e)
@@ -34,7 +33,8 @@ function getCategories() {
     // .then(trabajosConsecutivosSolucionado)
     .then((response) => {
       console.log("start")
-      console.log("jobs total: ", trabajosConsecutivosRecursivo(response.data.data))
+      // console.log("jobs total: ", trabajosConsecutivosRecursivo(response.data.data))
+      trabajosConsecutivosRecursivo(response.data.data).then(r => console.log(r))
     })
 }
 
