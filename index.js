@@ -1,4 +1,11 @@
+/*
+Run
+$ yarn start
+$ NODE_ENV=production yarn start
+*/
 const axios = require('axios').default;
+axios.defaults.baseURL = process.env.NODE_ENV == 'production' ? 'https://www.getonbrd.com' : 'https://sandbox.getonbrd.dev'
+console.log(axios.defaults.baseURL)
 
 function trabajosConsecutivos(categories) {
   for (let i = 0; i < categories.length; i++) {
@@ -8,16 +15,16 @@ function trabajosConsecutivos(categories) {
 }
 
 function main() {
-  axios.get('https://www.getonbrd.com/api/v0/categories?per_page=10&page=1')
+  axios.get('api/v0/categories?per_page=10&page=1')
     .then(function ({data}) {
       // handle success
       trabajosConsecutivos(data.data)
-      // axios.get('https://www.getonbrd.com/api/v0/categories/programming/jobs?per_page=1&page=1')
       const category_id = 'programming'
-      axios.get(`https://www.getonbrd.com/api/v0/categories/${category_id}/jobs?per_page=1&page=1&expand=["company"]`)
+      axios.get(`api/v0/categories/${category_id}/jobs?per_page=1&page=1&expand=["company"]`)
         .then(function ({data}) {
         // .then(function (response) {
           console.log(data)
+          console.log(process.env.NODE_ENV)
         })
     })
     .catch(function (error) {
