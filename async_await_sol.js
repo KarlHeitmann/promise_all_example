@@ -13,7 +13,7 @@ async function trabajosConsecutivos(categories) {
 }
 
 async function getCategories() {
-  const response = await axios.get('api/v0/categories?per_page=10&page=1')
+  const response = await axios.get('api/v0/categories?per_page=100&page=1')
   await trabajosConsecutivos(response.data.data)
 }
 

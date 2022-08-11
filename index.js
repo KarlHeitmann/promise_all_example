@@ -4,10 +4,11 @@ $ yarn start
 $ NODE_ENV=production yarn start
 */
 const axios = require('axios').default;
-// const file_to_open = './async_await_sol'
-const file_to_open = './async_sol'
+const file_to_open = './async_await_sol'
+// const file_to_open = './async_sol'
 const { wrapperTask } = require(file_to_open)
 axios.defaults.baseURL = process.env.NODE_ENV == 'production' ? 'https://www.getonbrd.com' : 'https://sandbox.getonbrd.dev'
+// ternary operator
 console.log(axios.defaults.baseURL)
 
 function main() {
